@@ -15,9 +15,9 @@ export class HomeComponent implements OnInit {
     constructor(private dataService: DataService) {
         var settings = {
             "fileName": "../../data/past180days20170612.csv",
-            "totalRange": 30,
-            "interval": 10,
-            "endDate": new Date("2017-04-05")
+            "totalRange": 120,
+            "interval": 30,
+            "endDate": new Date("2017-06-12")
         }
         var d3 = require('d3');
         function subDate(date, days) {
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
             return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
         }
 
-
+        var dateFunc = {};
         //Get Date ranges into an array based on initial date, amount of days to go back, and newinterval
         //if newinterval goes past the amount of days, it'll still have the full date range for that newinterval (it won't cut any newintervals short)
         var getDateRanges = function (initDate, amtDays, newinterval, funcDate) {
