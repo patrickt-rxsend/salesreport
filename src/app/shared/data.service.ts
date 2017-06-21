@@ -6,7 +6,7 @@ export class DataService {
     constructor() { }
     
     getProjectName() {
-        return 'Angular Bare Bones';
+        return 'Dolphin Sales Portal Project';
     }
 
 }

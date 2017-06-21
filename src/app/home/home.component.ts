@@ -13,9 +13,12 @@ export class HomeComponent implements OnInit {
     projectName: string;
 
     constructor(private dataService: DataService) {
-        // var d3 = require('d3');
-        // var d3;
-        // var testData;
+        var settings = {
+            "fileName": "../../data/past180days20170612.csv",
+            "totalRange": 30,
+            "interval": 10,
+            "endDate": new Date("2017-04-05")
+        }
         var d3 = require('d3');
         function subDate(date, days) {
             var tempDate = new Date(date);
@@ -25,95 +28,86 @@ export class HomeComponent implements OnInit {
             var tempDate = new Date(date);
             return new Date(tempDate.setDate(tempDate.getDate() + days));
         }
-        d3.text("../../data/past180days20170612.csv", function (data) {
-            var totalRange = 30;
-            var interval = 10;
-            var endDate = new Date("2017-04-05")
-            // testData = data;
-            //    console.log(data[0]); 
+        var dateToString = function (x) {
+            return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
+        }
 
 
-
-
-            var dateToString = function (x) {
-                return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
+        //Get Date ranges into an array based on initial date, amount of days to go back, and newinterval
+        //if newinterval goes past the amount of days, it'll still have the full date range for that newinterval (it won't cut any newintervals short)
+        var getDateRanges = function (initDate, amtDays, newinterval, funcDate) {
+            if (!newinterval) {
+                newinterval = settings.interval;
+            } else {
+                settings.interval = newinterval;
             }
+            var dateRange = [];
+            var counter = 1;
+            dateRange.push(initDate);
 
-
-            //Get Date ranges into an array based on initial date, amount of days to go back, and newInterval
-            //if newInterval goes past the amount of days, it'll still have the full date range for that newInterval (it won't cut any newIntervals short)
-            var getDateRanges = function (initDate, amtDays, newInterval, funcDate) {
-                if (!newInterval) {
-                    newInterval = interval;
-                } else {
-                    interval = newInterval;
+            while (true) {
+                dateRange.push(funcDate(initDate, newinterval * counter));
+                counter++;
+                if (counter * newinterval >= amtDays) {
+                    dateRange.push(funcDate(initDate, newinterval * counter));
+                    break;
                 }
-                var dateRange = [];
-                var counter = 1;
-                dateRange.push(initDate);
-
-                while (true) {
-                    dateRange.push(funcDate(initDate, newInterval * counter));
-                    counter++;
-                    if (counter * newInterval >= amtDays) {
-                        dateRange.push(funcDate(initDate, newInterval * counter));
-                        break;
-                    }
-                }
-                //    debugger;
-                return dateRange;
             }
+            //    debugger;
+            return dateRange;
+        }
 
-            //Turn the range of dates into a usable string for keys
-            var dateRangeString = function (dateRanges) {
-                var strArr = [];
-                //    debugger;
-                var i;
-                for (i = 0; i < dateRanges.length - 1; i++) {
-                    strArr.push(dateToString(dateRanges[i]) + " to " + dateToString(dateRanges[i + 1]));
-                }
-                //    debugger;
-                return strArr;
+        //Turn the range of dates into a usable string for keys
+        var dateRangeString = function (dateRanges) {
+            var strArr = [];
+            //    debugger;
+            var i;
+            for (i = 0; i < dateRanges.length - 1; i++) {
+                strArr.push(dateToString(dateRanges[i]) + " to " + dateToString(dateRanges[i + 1]));
             }
+            //    debugger;
+            return strArr;
+        }
 
-            //Finds the difference between two dates
-            //Param1: Date Variable
-            //Param2: Date Variable
-            var diffDays = function (day1, day2) {
-                var oneDay = 24 * 60 * 60 * 1000;
-                return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
+        //Finds the difference between two dates
+        //Param1: Date Variable
+        //Param2: Date Variable
+        var diffDays = function (day1, day2) {
+            var oneDay = 24 * 60 * 60 * 1000;
+            return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
+        }
+
+        //x is date range
+        //y is value
+        function linearRegression(x, y) {
+            var lr = {};
+            var n = y.length;
+            var sum_x = 0;
+            var sum_y = 0;
+            var sum_xy = 0;
+            var sum_xx = 0;
+            var sum_yy = 0;
+
+            for (var i = 0; i < y.length; i++) {
+
+                sum_x += x[i];
+                sum_y += y[i];
+                sum_xy += (x[i] * y[i]);
+                sum_xx += (x[i] * x[i]);
+                sum_yy += (y[i] * y[i]);
             }
+            // debugger;
+            lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
+            lr['intercept'] = (sum_y - lr['slope'] * sum_x) / n;
+            lr['r2'] = Math.pow((n * sum_xy - sum_x * sum_y) / Math.sqrt((n * sum_xx - sum_x * sum_x) * (n * sum_yy - sum_y * sum_y)), 2);
 
-            //x is date range
-            //y is value
-            function linearRegression(x, y) {
-                var lr = {};
-                var n = y.length;
-                var sum_x = 0;
-                var sum_y = 0;
-                var sum_xy = 0;
-                var sum_xx = 0;
-                var sum_yy = 0;
-
-                for (var i = 0; i < y.length; i++) {
-
-                    sum_x += x[i];
-                    sum_y += y[i];
-                    sum_xy += (x[i] * y[i]);
-                    sum_xx += (x[i] * x[i]);
-                    sum_yy += (y[i] * y[i]);
-                }
-                // debugger;
-                lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
-                lr['intercept'] = (sum_y - lr['slope'] * sum_x) / n;
-                lr['r2'] = Math.pow((n * sum_xy - sum_x * sum_y) / Math.sqrt((n * sum_xx - sum_x * sum_x) * (n * sum_yy - sum_y * sum_y)), 2);
-
-                return lr;
-            }
-
-
-
-            var startDate = subDate(endDate, totalRange);
+            return lr;
+        }
+        /**
+         * Begin reading file
+         */
+        d3.text(settings.fileName, function (data) {
+            var startDate = subDate(settings.endDate, settings.totalRange);
             var doctors = {};
             var i;
             var parsedCSV = d3.csvParseRows(data);
@@ -121,7 +115,7 @@ export class HomeComponent implements OnInit {
             /*
              *  MOST DEFINITEL YNEEDS TO BE CLEANED UP
              **/
-            var newRange = getDateRanges(startDate, totalRange, interval, addDate);
+            var newRange = getDateRanges(startDate, settings.totalRange, settings.interval, addDate);
             var newRangeStr = dateRangeString(newRange);
 
             //test pieces
@@ -145,7 +139,7 @@ export class HomeComponent implements OnInit {
                 var drArr = parsedCSV[i];
                 var drName = drArr[0].toString();
                 var refDate = new Date(drArr[3]);
-                if (refDate <= endDate && refDate >= startDate) {
+                if (refDate <= settings.endDate && refDate >= startDate) {
                     //Add to the doctor's object
                     if (!doctors[drName]) {
                         doctors[drName] = {};
@@ -160,7 +154,7 @@ export class HomeComponent implements OnInit {
                     //Adds counts to correct date range
                     var intDiff = diffDays(new Date(refDate), startDate);
 
-                    var rangeEst = Math.floor(intDiff / interval);
+                    var rangeEst = Math.floor(intDiff / settings.interval);
                     var drRange = doctors[drName][newRangeStr[rangeEst]];
                     doctors[drName][newRangeStr[rangeEst]] = doctors[drName][newRangeStr[rangeEst]] + parseInt(drArr[5]);
                 }
