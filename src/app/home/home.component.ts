@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { DataService } from '../shared/data.service';
 
+export class Options {
+    startDate: Date;
+    endDate: Date;
+}
+
 @Component({
     moduleId: module.id,
     selector: 'home',
@@ -11,6 +16,10 @@ import { DataService } from '../shared/data.service';
 export class HomeComponent implements OnInit {
 
     projectName: string;
+    options: Options = {
+        startDate: new Date("2017-06-12"),
+        endDate: new Date("2017-05-12")
+    }
 
     constructor(private dataService: DataService) {
         var settings = {
