@@ -5,6 +5,9 @@ import { DataService } from '../shared/data.service';
 export class Options {
     startDate: Date;
     endDate: Date;
+    name: String;
+    totalRange: number;
+    interval: number;
 }
 
 @Component({
@@ -17,8 +20,11 @@ export class HomeComponent implements OnInit {
 
     projectName: string;
     options: Options = {
-        startDate: new Date("2017-06-12"),
-        endDate: new Date("2017-05-12")
+        startDate: new Date(),
+        endDate: new Date(),
+        name: '',
+        totalRange: 120,
+        interval: 30
     }
 
     constructor(private dataService: DataService) {
