@@ -1,41 +1,42 @@
 {
-    "name": "angular2-barebones",
-    "author": "Dan Wahlin",
-    "version": "1.0.0",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/danwahlin/angular2-barebones"
-    },
-    "scripts": {
-        "tsc": "tsc",
-        "tsc:w": "tsc -w",
-        "start": "tsc && concurrently \"tsc -w\" \"lite-server\" "
-    },
-    "license": "ISC",
-    "dependencies": {
-        "@angular/common": "4.2.2",
-        "@angular/compiler": "4.2.2",
-        "@angular/core": "4.2.2",
-        "@angular/forms": "4.2.2",
-        "@angular/http": "4.2.2",
-        "@angular/platform-browser": "4.2.2",
-        "@angular/platform-browser-dynamic": "4.2.2",
-        "@angular/router": "4.2.2",
-        "@angular/upgrade": "4.2.2",
-        "@angular/compiler-cli": "4.2.2",
-        "@angular/platform-server": "4.2.2",
-        "@angular/tsc-wrapped": "4.2.2",
-        "@angular/animations": "4.2.2",
-        "systemjs": "0.20.14",
-        "core-js": "2.4.1",
-        "rxjs": "5.4.0",
-        "zone.js": "0.8.12",
-        "d3": "4.9.1"
-    },
-    "devDependencies": {
-        "concurrently": "3.4.0",
-        "lite-server": "2.3.0",
-        "typescript": "2.3.4",
-        "@types/node": "7.0.31"
-    }
+  "name": "angular2-barebones",
+  "author": "Dan Wahlin",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danwahlin/angular2-barebones"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "start": "tsc && concurrently \"tsc -w\" \"lite-server\" "
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@angular/animations": "4.2.2",
+    "@angular/common": "4.2.2",
+    "@angular/compiler": "4.2.2",
+    "@angular/compiler-cli": "4.2.2",
+    "@angular/core": "4.2.2",
+    "@angular/forms": "4.2.2",
+    "@angular/http": "4.2.2",
+    "@angular/platform-browser": "4.2.2",
+    "@angular/platform-browser-dynamic": "4.2.2",
+    "@angular/platform-server": "4.2.2",
+    "@angular/router": "4.2.2",
+    "@angular/tsc-wrapped": "4.2.2",
+    "@angular/upgrade": "4.2.2",
+    "angularjs-datepicker": "^2.1.21",
+    "core-js": "2.4.1",
+    "d3": "4.9.1",
+    "rxjs": "5.4.0",
+    "systemjs": "0.20.14",
+    "zone.js": "0.8.12"
+  },
+  "devDependencies": {
+    "concurrently": "3.4.0",
+    "lite-server": "2.3.0",
+    "typescript": "2.3.4",
+    "@types/node": "7.0.31"
+  }
 }
