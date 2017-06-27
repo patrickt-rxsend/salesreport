@@ -18,7 +18,6 @@
     <br />Input the number of days you want to go back) <input [(ngModel)]="options.totalRange" placeHolder = 120>
     <br />Input an interval (such as 7 days, 30 days, etc...) <input [(ngModel)]="options.interval" placeHolder=30>
     <br>
-    <button
-        type="button">Apply Changes   
-    </button>
+    <button (click)="clicked($event)">View Results</button>
+    <br /><p myReport></p>
 </div>

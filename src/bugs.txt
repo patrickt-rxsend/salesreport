@@ -1,0 +1,18 @@
+Bugs to fix:
+
+Interval shouldn't be more than the number of days
+Shouldn't need to refresh page and then put inputs, it should dynamically change upon hitting view results
+Interval shouldn't exceed number of days to go back, prevent improper user input
+Add zip filtering
+Horizontal scrolling not working
+
+
+Features to Add
+Real time data (SQL Connection)
+Graphs
+Usr login
+Filter by zip or location
+Export Results
+
+User Experience/Interface related stuff to add:
+CSS

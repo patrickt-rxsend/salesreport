@@ -52,25 +52,25 @@ export class HomeComponent implements OnInit {
             var oneDay = 24 * 60 * 60 * 1000;
             return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
         },
-        subDate: function(date, days) {
+        subDate: function (date, days) {
             // debugger;
             var tempDate = new Date(date);
             return new Date(tempDate.setDate(tempDate.getDate() - days));
         },
-        addDate: function(date, days) {
+        addDate: function (date, days) {
             var tempDate = new Date(date);
             return new Date(tempDate.setDate(tempDate.getDate() + days));
         },
-        dateToString: function(x) {
+        dateToString: function (x) {
             return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
         }
     }
 
-    constructor(private dataService: DataService) {
+    clicked(event) {
         var settings = {
-            "fileName": "../../data/past180days20170612.csv",
+            "fileName": "../../data/past360days20170627.csv",
             // "totalRange": this.dateFunc.diffDays(this.options.endDate, this.options.startDate),
-            "totalRange" : this.options.totalRange,
+            "totalRange": this.options.totalRange,
             "interval": this.options.interval,
             "endDate": this.options.endDate
         }
@@ -209,7 +209,7 @@ export class HomeComponent implements OnInit {
             }
             //    console.log(doctors);
             console.log(trendArr);
-            var container = d3.select("body")
+            var container = d3.select("p")
                 .append("table")
                 .selectAll("tr")
                 .data(trendArr).enter()
@@ -220,6 +220,10 @@ export class HomeComponent implements OnInit {
                 .append("td")
                 .text(function (d) { return d; });
         });
+    }
+
+    constructor(private dataService: DataService) {
+
 
     }
 
