@@ -10,6 +10,14 @@ export class Options {
     interval: number;
 }
 
+export class DateFunc {
+    dateRangeString: Function;
+    diffDays: Function;
+    subDate: Function;
+    addDate: Function;
+    dateToString: Function;
+}
+
 @Component({
     moduleId: module.id,
     selector: 'home',
@@ -27,27 +35,47 @@ export class HomeComponent implements OnInit {
         interval: 30
     }
 
+    dateFunc: DateFunc = {
+        dateRangeString: function (dateRanges) {
+            var strArr = [];
+            //    debugger;
+            var i;
+            for (i = 0; i < dateRanges.length - 1; i++) {
+                strArr.push(this.dateToString(dateRanges[i]) + " to " + this.dateToString(dateRanges[i + 1]));
+            }
+            //    debugger;
+            return strArr;
+        },
+        //Param1: Date Variable
+        //Param2: Date Variable
+        diffDays: function (day1, day2) {
+            var oneDay = 24 * 60 * 60 * 1000;
+            return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
+        },
+        subDate: function(date, days) {
+            // debugger;
+            var tempDate = new Date(date);
+            return new Date(tempDate.setDate(tempDate.getDate() - days));
+        },
+        addDate: function(date, days) {
+            var tempDate = new Date(date);
+            return new Date(tempDate.setDate(tempDate.getDate() + days));
+        },
+        dateToString: function(x) {
+            return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
+        }
+    }
+
     constructor(private dataService: DataService) {
         var settings = {
             "fileName": "../../data/past180days20170612.csv",
-            "totalRange": 120,
-            "interval": 30,
-            "endDate": new Date("2017-06-12")
+            // "totalRange": this.dateFunc.diffDays(this.options.endDate, this.options.startDate),
+            "totalRange" : this.options.totalRange,
+            "interval": this.options.interval,
+            "endDate": this.options.endDate
         }
         var d3 = require('d3');
-        function subDate(date, days) {
-            var tempDate = new Date(date);
-            return new Date(tempDate.setDate(tempDate.getDate() - days));
-        }
-        function addDate(date, days) {
-            var tempDate = new Date(date);
-            return new Date(tempDate.setDate(tempDate.getDate() + days));
-        }
-        var dateToString = function (x) {
-            return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
-        }
 
-        var dateFunc = {};
         //Get Date ranges into an array based on initial date, amount of days to go back, and newinterval
         //if newinterval goes past the amount of days, it'll still have the full date range for that newinterval (it won't cut any newintervals short)
         var getDateRanges = function (initDate, amtDays, newinterval, funcDate) {
@@ -72,25 +100,6 @@ export class HomeComponent implements OnInit {
             return dateRange;
         }
 
-        //Turn the range of dates into a usable string for keys
-        var dateRangeString = function (dateRanges) {
-            var strArr = [];
-            //    debugger;
-            var i;
-            for (i = 0; i < dateRanges.length - 1; i++) {
-                strArr.push(dateToString(dateRanges[i]) + " to " + dateToString(dateRanges[i + 1]));
-            }
-            //    debugger;
-            return strArr;
-        }
-
-        //Finds the difference between two dates
-        //Param1: Date Variable
-        //Param2: Date Variable
-        var diffDays = function (day1, day2) {
-            var oneDay = 24 * 60 * 60 * 1000;
-            return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
-        }
 
         //x is date range
         //y is value
@@ -121,33 +130,17 @@ export class HomeComponent implements OnInit {
         /**
          * Begin reading file
          */
+        // makes it so dateFunc can be read inside the file
+        var dateFunc = this.dateFunc;
         d3.text(settings.fileName, function (data) {
-            var startDate = subDate(settings.endDate, settings.totalRange);
+            // debugger;
+            var startDate = dateFunc.subDate(settings.endDate, settings.totalRange);
             var doctors = {};
             var i;
             var parsedCSV = d3.csvParseRows(data);
 
-            /*
-             *  MOST DEFINITEL YNEEDS TO BE CLEANED UP
-             **/
-            var newRange = getDateRanges(startDate, settings.totalRange, settings.interval, addDate);
-            var newRangeStr = dateRangeString(newRange);
-
-            //test pieces
-            //    middleDate = newRange[1];
-            //    startDate = newRange[2];
-            //    console.log(newRange);
-            //    console.log(parsedCSV);
-
-            // 0"Doctor"
-            // 1"city"0
-            // 2"Zipcode"
-            // 3"Date_"
-            // 4"Document_Folder"
-            // 5"count()"
-
-            //creates an object list of doctors with relevant information
-            //Also puts the count for the date ranges
+            var newRange = getDateRanges(startDate, settings.totalRange, settings.interval, dateFunc.addDate);
+            var newRangeStr = dateFunc.dateRangeString(newRange);
             for (i in parsedCSV) {
 
 
@@ -167,7 +160,7 @@ export class HomeComponent implements OnInit {
                     }
 
                     //Adds counts to correct date range
-                    var intDiff = diffDays(new Date(refDate), startDate);
+                    var intDiff = dateFunc.diffDays(new Date(refDate), startDate);
 
                     var rangeEst = Math.floor(intDiff / settings.interval);
                     var drRange = doctors[drName][newRangeStr[rangeEst]];
