@@ -16,3 +16,16 @@ Export Results
 
 User Experience/Interface related stuff to add:
 CSS
+
+
+Flag things have huge discrepency
+Highlight things with a different color
+
+Allow the users to select the zip codes
+Have the doctor's name on the right based on the cities/zipcodes
+
+Display each individual doctor
+User should be able to remove doctors
+
+Make sure the same doctor cannot be assigned to more than one sales rep
+
