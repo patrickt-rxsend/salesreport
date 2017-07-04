@@ -17,7 +17,16 @@
         </select>
     <br />Input the number of days you want to go back) <input [(ngModel)]="options.totalRange" placeHolder = 120>
     <br />Input an interval (such as 7 days, 30 days, etc...) <input [(ngModel)]="options.interval" placeHolder=30>
-    <br />Input a threshold for trend (values above won't show) <input [(ngModel)]="options.trendThreshold">
+    <br />Input a threshold for trend (values above/below won't show) <input [(ngModel)]="options.trendThreshold">
+            Cut <select [(ngModel)]="options.trendCutoff" ng_model="data.singleSelect">
+            <option value="Above">Above</option>
+            <option value="Below">Below</option>
+            </select>
+    <br />Input a threshold for total referrals (values above/below won't show) <input [(ngModel)]="options.totRefThreshhold">
+            Cut <select [(ngModel)]="options.totRefCutoff" ng_model="data.singleSelect">
+            <option value="Above">Above</option>
+            <option value="Below">Below</option>
+            </select>
     <br />Sort By: <select [(ngModel)]="sortOptions.sortOne" ng_model="data.singleSelect">
         <option value="Doctor">Doctor</option>
         <option value="City">City</option>

@@ -9,6 +9,9 @@ export class Options {
     totalRange: number;
     interval: number;
     trendThreshold: number;
+    trendCutoff: String;
+    totRefThreshold: number;
+    totRefCutoff: String
 }
 
 export class SortOptions {
@@ -51,7 +54,10 @@ export class HomeComponent implements OnInit {
         name: '',
         totalRange: 120,
         interval: 30,
-        trendThreshold: 2
+        trendThreshold: 2,
+        trendCutoff: "Above",
+        totRefThreshold: 0,
+        totRefCutoff: "Below"
     }
     sortOptions: SortOptions = {
         sortOne: "Trend",
@@ -142,22 +148,22 @@ export class HomeComponent implements OnInit {
             var sortOne = sortOptions.value[sortOptions.sortOne.toString()];
             var sortTwo = sortOptions.value[sortOptions.sortTwo.toString()];
             if (a[sortOne] !== sortOptions.sortOne) {
-                if(sortAsc(a[sortOne], b[sortOne], sortOptions.sortOneOrder) !== 0){
+                if (sortAsc(a[sortOne], b[sortOne], sortOptions.sortOneOrder) !== 0) {
                     return sortAsc(a[sortOne], b[sortOne], sortOptions.sortOneOrder);
                 } else {
                     return sortAsc(a[sortTwo], b[sortTwo], sortOptions.sortTwoOrder);
                 }
             }
         }
-        var sortAsc = function (a, b, order){
+        var sortAsc = function (a, b, order) {
             // debugger;
-            if(order === "Ascending"){
-                if(a < b) return -1;
-                else if(a > b) return 1;
+            if (order === "Ascending") {
+                if (a < b) return -1;
+                else if (a > b) return 1;
                 else return 0;
             } else {
-                if(b < a) return -1;
-                else if(b > a) return 1;
+                if (b < a) return -1;
+                else if (b > a) return 1;
                 else return 0;
             }
         }
@@ -305,9 +311,16 @@ export class HomeComponent implements OnInit {
             for (i in doctors) {
                 var doctor = doctors[i];
                 // debugger;
-                trendArr.push([i, doctor["city"], doctor["zipcode"], doctor["trend"], doctor["Total Referrals"]]);
-                for (i in newRangeStr) {
-                    trendArr[trendArr.length - 1].push(doctor[newRangeStr[i]]);
+                /**
+                 * Filters out results based on trend value
+                 */
+                if ((doctor["Trend"] <= options.trendThreshold && options.trendCutoff === "Above") || (doctor["Trend"] >= options.trendThreshold && options.trendCutoff === "Below")) {
+                    if ((doctor["Total Referrals"] <= options.totRefThreshold && options.totRefCutoff === "Above") || (doctor["Total Referrals"] >= options.totRefThreshold && options.totRefCutoff === "Below")) {
+                        trendArr.push([i, doctor["city"], doctor["zipcode"], doctor["trend"], doctor["Total Referrals"]]);
+                        for (i in newRangeStr) {
+                            trendArr[trendArr.length - 1].push(doctor[newRangeStr[i]]);
+                        }
+                    }
                 }
             }
             //    console.log(doctors);
