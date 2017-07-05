@@ -314,7 +314,7 @@ export class HomeComponent implements OnInit {
                 /**
                  * Filters out results based on trend value
                  */
-                if ((doctor["Trend"] <= options.trendThreshold && options.trendCutoff === "Above") || (doctor["Trend"] >= options.trendThreshold && options.trendCutoff === "Below")) {
+                if ((doctor["trend"] <= options.trendThreshold && options.trendCutoff === "Above") || (doctor["trend"] >= options.trendThreshold && options.trendCutoff === "Below")) {
                     if ((doctor["Total Referrals"] <= options.totRefThreshold && options.totRefCutoff === "Above") || (doctor["Total Referrals"] >= options.totRefThreshold && options.totRefCutoff === "Below")) {
                         trendArr.push([i, doctor["city"], doctor["zipcode"], doctor["trend"], doctor["Total Referrals"]]);
                         for (i in newRangeStr) {

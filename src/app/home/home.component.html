@@ -22,12 +22,19 @@
             <option value="Above">Above</option>
             <option value="Below">Below</option>
             </select>
-    <br />Input a threshold for total referrals (values above/below won't show) <input [(ngModel)]="options.totRefThreshhold">
+    <br />Input a threshold for total referrals (values above/below won't show) <input [(ngModel)]="options.totRefThreshold">
             Cut <select [(ngModel)]="options.totRefCutoff" ng_model="data.singleSelect">
             <option value="Above">Above</option>
             <option value="Below">Below</option>
             </select>
-    <br />Sort By: <select [(ngModel)]="sortOptions.sortOne" ng_model="data.singleSelect">
+
+    <!--<div>
+    <br />Zip Codes for {{userFunc.zipToString(options.name)}}
+    </div>-->
+    <br>
+    <button (click)="clicked($event)">View Results</button>
+    <br /><h1>{{options.name}}'s report</h1>
+        <br />Sort By: <select [(ngModel)]="sortOptions.sortOne" ng_model="data.singleSelect">
         <option value="Doctor">Doctor</option>
         <option value="City">City</option>
         <option value="Zipcode">Zipcode</option>
@@ -49,11 +56,5 @@
             <option value="Ascending">Ascending</option>
             <option value="Descending">Descending</option>
             </select>
-    <!--<div>
-    <br />Zip Codes for {{userFunc.zipToString(options.name)}}
-    </div>-->
-    <br>
-    <button (click)="clicked($event)">View Results</button>
-    <br /><h1>{{options.name}}'s report</h1>
     <br /><p myReport></p>
 </div>

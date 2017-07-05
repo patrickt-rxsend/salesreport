@@ -29,3 +29,9 @@ User should be able to remove doctors
 
 Make sure the same doctor cannot be assigned to more than one sales rep
 
+use mongodb or sqlite for persistent user settings
+
+Filter by title
+Make nicer
+Export
+Set user default settings
