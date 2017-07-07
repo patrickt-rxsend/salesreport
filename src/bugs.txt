@@ -35,3 +35,6 @@ Filter by title
 Make nicer
 Export
 Set user default settings
+
+Have a trend showing overall trend across all data within parameters
+Add a quick sort button

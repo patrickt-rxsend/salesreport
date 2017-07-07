@@ -33,28 +33,32 @@
     </div>-->
     <br>
     <button (click)="clicked($event)">View Results</button>
-    <br /><h1>{{options.name}}'s report</h1>
-        <br />Sort By: <select [(ngModel)]="sortOptions.sortOne" ng_model="data.singleSelect">
-        <option value="Doctor">Doctor</option>
-        <option value="City">City</option>
-        <option value="Zipcode">Zipcode</option>
-        <option value="Trend">Trend</option>
-        <option value="Total Referrals">Total Referrals</option>
-        </select>
-        Order: <select [(ngModel)]="sortOptions.sortOneOrder" ng_model="data.singleSelect">
-            <option value="Ascending">Ascending</option>
-            <option value="Descending">Descending</option>
+    <div [ngClass]="resultsPane">
+        <br /><h1>{{options.name}}'s report</h1>
+            <br />Sort By: <select [(ngModel)]="sortOptions.sortOne" ng_model="data.singleSelect">
+            <option value="Doctor">Doctor</option>
+            <option value="City">City</option>
+            <option value="Zipcode">Zipcode</option>
+            <option value="Trend">Trend</option>
+            <option value="Total Referrals">Total Referrals</option>
             </select>
-    <br />Then sort By: <select [(ngModel)]="sortOptions.sortTwo" ng_model="data.singleSelect">
-        <option value="Doctor">Doctor</option>
-        <option value="City">City</option>
-        <option value="Zipcode">Zipcode</option>
-        <option value="Trend">Trend</option>
-        <option value="Total Referrals">Total Referrals</option>
-        </select>
-        Order: <select [(ngModel)]="sortOptions.sortTwoOrder" ng_model="data.singleSelect">
-            <option value="Ascending">Ascending</option>
-            <option value="Descending">Descending</option>
+            Order: <select [(ngModel)]="sortOptions.sortOneOrder" ng_model="data.singleSelect">
+                <option value="Ascending">Ascending</option>
+                <option value="Descending">Descending</option>
+                </select>
+        <br />Then sort By: <select [(ngModel)]="sortOptions.sortTwo" ng_model="data.singleSelect">
+            <option value="Doctor">Doctor</option>
+            <option value="City">City</option>
+            <option value="Zipcode">Zipcode</option>
+            <option value="Trend">Trend</option>
+            <option value="Total Referrals">Total Referrals</option>
             </select>
-    <br /><p [ngStyle]="results"></p>
+            Order: <select [(ngModel)]="sortOptions.sortTwoOrder" ng_model="data.singleSelect">
+                <option value="Ascending">Ascending</option>
+                <option value="Descending">Descending</option>
+                </select>
+         <br /><button (click)="clicked($event)">Sort</button>
+
+        <br /><p [ngClass]="resultsGrid"></p>
+    </div>
 </div>

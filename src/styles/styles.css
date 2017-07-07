@@ -63,3 +63,10 @@ footer {
     font-size:20px;
     color: white;
 }
+
+table, th, td {
+    border: 1px solid #dadada;
+    padding: 2px;
+    overflow: hidden;
+    text-align: center;
+}

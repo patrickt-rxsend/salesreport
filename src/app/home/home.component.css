@@ -1,0 +1,7 @@
+.hidePane {
+    display: none;
+}
+
+.showPane {
+    display: block;
+}
