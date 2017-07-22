@@ -13,6 +13,10 @@ export class Options {
     totRefThreshold: number;
     totRefCutoff: String
 }
+export class Selections {
+    nameSelection: Array<Object>;
+    orderSelection: Array<Object>;
+}
 
 export class SortOptions {
     sortOne: String;
@@ -65,6 +69,21 @@ export class HomeComponent implements OnInit {
         trendCutoff: "Above",
         totRefThreshold: 0,
         totRefCutoff: "Below"
+    }
+
+    selections: Selections = {
+        nameSelection: [
+            {id: 'Kevin', name: 'Kevin'},
+            {id: 'Rose', name: 'Rose'},
+            {id: 'RaShaud', name: 'RaShaud'},
+        ],
+        orderSelection:[
+            {id: 'Doctor', option: 'Doctor'},
+            {id: 'City', option: 'City'},
+            {id: 'Zipcode', option: 'Zipcode'},
+            {id: 'Trend', option: 'Trend'},
+            {id: 'Total Referrals', option: 'Total Referrals'},
+        ]
     }
     sortOptions: SortOptions = {
         sortOne: "Trend",

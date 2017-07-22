@@ -9,11 +9,14 @@
     <!--Start Date: <md-datepicker ngModel= "options.startDate"></md-datepicker>-->
     <!--<br />End Date: <md-datepicker [(ngModel)] = "options.endDate" placeHolder="YYYY-MM-DD"></md-datepicker>-->
     <!--Your name: <input [(ngModel)] = "options.name" placeholder="name">-->
-    Your name: <select [(ngModel)]="options.name" ng-model="data.singleSelect">
+    <!--Your name: <select [(ngModel)]="options.name" ng-model="data.singleSelect">
         <option value="">---Please select---</option>
         <option value="Kevin">Kevin</option>
         <option value="RaShaud">RaShaud</option>
         <option value="Rose">Rose</option>
+        </select>-->
+    Your name: <select [(ngModel)]="options.name">
+            <option *ngFor="let n of selections.nameSelection" [ngValue]="n.id">{{n.name}}</option>
         </select>
     <br />Input the number of days you want to go back) <input [(ngModel)]="options.totalRange" placeHolder = 120>
     <br />Input an interval (such as 7 days, 30 days, etc...) <input [(ngModel)]="options.interval" placeHolder=30>
@@ -35,23 +38,15 @@
     <button (click)="clicked($event)">View Results</button>
     <div [ngClass]="resultsPane">
         <br /><h1>{{options.name}}'s report</h1>
-            <br />Sort By: <select [(ngModel)]="sortOptions.sortOne" ng_model="data.singleSelect">
-            <option value="Doctor">Doctor</option>
-            <option value="City">City</option>
-            <option value="Zipcode">Zipcode</option>
-            <option value="Trend">Trend</option>
-            <option value="Total Referrals">Total Referrals</option>
+            <br />Sort By: <select [(ngModel)]="sortOptions.sortOne">
+            <option *ngFor="let n of selections.orderSelection" [ngValue]="n.id">{{n.option}}</option>
             </select>
             Order: <select [(ngModel)]="sortOptions.sortOneOrder" ng_model="data.singleSelect">
                 <option value="Ascending">Ascending</option>
                 <option value="Descending">Descending</option>
                 </select>
-        <br />Then sort By: <select [(ngModel)]="sortOptions.sortTwo" ng_model="data.singleSelect">
-            <option value="Doctor">Doctor</option>
-            <option value="City">City</option>
-            <option value="Zipcode">Zipcode</option>
-            <option value="Trend">Trend</option>
-            <option value="Total Referrals">Total Referrals</option>
+        <br />Then sort By: <select [(ngModel)]="sortOptions.sortTwo">
+            <option *ngFor="let n of selections.orderSelection" [ngValue]="n.id">{{n.option}}</option>
             </select>
             Order: <select [(ngModel)]="sortOptions.sortTwoOrder" ng_model="data.singleSelect">
                 <option value="Ascending">Ascending</option>
