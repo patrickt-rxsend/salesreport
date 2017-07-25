@@ -16,6 +16,7 @@ export class Options {
 export class Selections {
     nameSelection: Array<Object>;
     orderSelection: Array<Object>;
+    referralSelection: Array<Object>;
 }
 
 export class SortOptions {
@@ -83,6 +84,10 @@ export class HomeComponent implements OnInit {
             {id: 'Zipcode', option: 'Zipcode'},
             {id: 'Trend', option: 'Trend'},
             {id: 'Total Referrals', option: 'Total Referrals'},
+        ],
+        referralSelection:[
+            //TODO
+
         ]
     }
     sortOptions: SortOptions = {
@@ -170,6 +175,11 @@ export class HomeComponent implements OnInit {
         //         else return 0;
         //     }
         // }
+
+        /**
+         * Sorts by comparing two different elements.
+         * If rhte first sort option is equal, then the second option is considered instead
+         */
         var sortOptions = this.sortOptions;
         var twoSort = function (a, b) {
             // debugger;
@@ -183,6 +193,10 @@ export class HomeComponent implements OnInit {
                 }
             }
         }
+
+        /**
+         * Sorting function
+        **/
         var sortAsc = function (a, b, order) {
             // debugger;
             if (order === "Ascending") {
