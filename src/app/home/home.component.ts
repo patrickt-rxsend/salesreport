@@ -14,6 +14,7 @@ export class Options {
     totRefCutoff: String
 }
 export class Selections {
+    addToSelection: Function;
     nameSelection: Array<Object>;
     orderSelection: Array<Object>;
     referralSelection: Array<Object>;
@@ -26,6 +27,9 @@ export class SortOptions {
     sortTwoOrder: String;
     value: Object;
     addValue: Function;
+}
+export class FilterOptions {
+    referral: String;
 }
 
 export class DateFunc {
@@ -74,6 +78,17 @@ export class HomeComponent implements OnInit {
     }
 
     selections: Selections = {
+        addToSelection: function (selection, val) {
+            // debugger;
+            // DEFINITELY NEED TO FIX THIS
+            var i;
+            for (i in this[selection]) {
+                if (this[selection][i]["id"] === val.toString) {
+                    return;
+                }
+            }
+            this[selection].push({ id: val.toString(), option: val.toString() });
+        },
         nameSelection: [
             { id: 'Kevin', name: 'Kevin' },
             { id: 'Rose', name: 'Rose' },
@@ -87,8 +102,7 @@ export class HomeComponent implements OnInit {
             { id: 'Total Referrals', option: 'Total Referrals' },
         ],
         referralSelection: [
-            //TODO
-
+            { id: 'All', option: 'All' }
         ]
     }
     sortOptions: SortOptions = {
@@ -97,13 +111,13 @@ export class HomeComponent implements OnInit {
         sortTwo: "Total Referrals",
         sortTwoOrder: "Descending",
         addValue: function (newVal, selections) {
-                //This is kind of hacked in. May need to refactor in order to improve performance.
-                debugger;
-                if (!this.value[newVal.toString()]) {
-                    selections.orderSelection.push({ id: newVal.toString(), option: newVal.toString() });
-                    this.value[newVal.toString()] = selections.orderSelection.length - 1;
-                }
-            },
+            //This is kind of hacked in. May need to refactor in order to improve performance.
+            // debugger;
+            if (!this.value[newVal.toString()]) {
+                selections.addToSelection('orderSelection', newVal);
+                this.value[newVal.toString()] = selections.orderSelection.length - 1;
+            }
+        },
         value: {
             "Doctor": 0,
             "City": 1,
@@ -111,6 +125,9 @@ export class HomeComponent implements OnInit {
             "Trend": 3,
             "Total Referrals": 4
         }
+    }
+    filterOptions: FilterOptions = {
+        referral: 'All'
     }
     kevin: UserParams = {
         name: "Kevin",
@@ -302,6 +319,7 @@ export class HomeComponent implements OnInit {
         var kevin = this.kevin;
         var options = this.options;
         var selections = this.selections;
+        var referral = this.filterOptions.referral;
         d3.text(settings.fileName, function (data) {
             // debugger;
             var startDate = dateFunc.subDate(settings.endDate, settings.totalRange);
@@ -315,24 +333,32 @@ export class HomeComponent implements OnInit {
                 var drArr = parsedCSV[i];
                 var drName = drArr[0].toString();
                 var refDate = new Date(drArr[3]);
+                var refType = drArr[4].toString();
+                // Referral code goes here
+                // debugger;
                 if (refDate <= settings.endDate && refDate >= startDate) {
                     //Add to the doctor's object
-                    if (!doctors[drName]) {
-                        doctors[drName] = {};
-                        doctors[drName]["city"] = drArr[1];
-                        doctors[drName]["zipcode"] = drArr[2];
-                        for (i in newRangeStr) {
-                            doctors[drName][newRangeStr[i]] = 0;
+                    // debugger;
+                    //Only adds if referral either equals to 'All', or the current refType from data is equal to referral
+                    if (referral === 'All' || referral === refType) {
+                        if (!doctors[drName]) {
+                            doctors[drName] = {};
+                            doctors[drName]["city"] = drArr[1];
+                            doctors[drName]["zipcode"] = drArr[2];
+                            for (i in newRangeStr) {
+                                doctors[drName][newRangeStr[i]] = 0;
+                            }
+                            doctors[drName]["trend"] = 0;
+                            //adding referral object to add to selection later
+                            doctors[drName]["referrals"] = {"refType" : true};
                         }
-                        doctors[drName]["trend"] = 0;
+                        //Adds counts to correct date range
+                        var intDiff = dateFunc.diffDays(new Date(refDate), startDate);
+
+                        var rangeEst = Math.floor(intDiff / settings.interval);
+                        var drRange = doctors[drName][newRangeStr[rangeEst]];
+                        doctors[drName][newRangeStr[rangeEst]] = doctors[drName][newRangeStr[rangeEst]] + parseInt(drArr[5]);
                     }
-
-                    //Adds counts to correct date range
-                    var intDiff = dateFunc.diffDays(new Date(refDate), startDate);
-
-                    var rangeEst = Math.floor(intDiff / settings.interval);
-                    var drRange = doctors[drName][newRangeStr[rangeEst]];
-                    doctors[drName][newRangeStr[rangeEst]] = doctors[drName][newRangeStr[rangeEst]] + parseInt(drArr[5]);
                 }
             }
 
@@ -362,6 +388,7 @@ export class HomeComponent implements OnInit {
             var i;
             //Adds to the first column
             for (i in selections.orderSelection) {
+                // debugger;
                 trendArr[0].push(selections.orderSelection[i]['option'].toString());
             }
             for (i in newRangeStr) {
@@ -375,10 +402,12 @@ export class HomeComponent implements OnInit {
                  * Filters out results based on trend value
                  */
                 if (filter(doctor)) {
+                    debugger;
                     trendArr.push([i, doctor["city"], doctor["zipcode"], doctor["trend"], doctor["Total Referrals"]]);
                     for (i in newRangeStr) {
                         trendArr[trendArr.length - 1].push(doctor[newRangeStr[i]]);
                     }
+
                 }
             }
             //    console.log(doctors);

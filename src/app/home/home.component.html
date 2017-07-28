@@ -53,8 +53,9 @@
                 <option value="Descending">Descending</option>
                 </select>
          <br /><button (click)="clicked($event)">Sort</button>
-         <!-- <br />Show: <select [(ngModel)]="filter.referral">
-            <option *ngFor="let n of selections.referralSelection" [ngValue]="n.id">{{n.options}}</option>  -->
+          <br />Show: <select [(ngModel)]="filterOptions.referral">
+            <option *ngFor="let n of selections.referralSelection" [ngValue]="n.id">{{n.options}}</option>  
+            </select>
         <br /><p [ngClass]="resultsGrid"></p>
     </div>
 </div>
