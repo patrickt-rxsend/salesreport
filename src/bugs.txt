@@ -38,3 +38,15 @@ Set user default settings
 
 Have a trend showing overall trend across all data within parameters
 Add a quick sort button
+
+Restrict access to only own data
+Restrict printing/properties
+
+verify what happens to past data
+
+verify accuracy
+
+sales rep doctor
+-Figure out how to assign a doctor to each sales rep
+    -Based on date the sale rep was assigned to the doctor
+    -Maybe need to keep a separate database

@@ -16,7 +16,7 @@
         <option value="Rose">Rose</option>
         </select>-->
     Your name: <select [(ngModel)]="options.name">
-            <option *ngFor="let n of selections.nameSelection" [ngValue]="n.id">{{n.name}}</option>
+            <option *ngFor="let n of selections.nameSelection" [ngValue]="n.id">{{n.option}}</option>
         </select>
     <br />Input the number of days you want to go back) <input [(ngModel)]="options.totalRange" placeHolder = 120>
     <br />Input an interval (such as 7 days, 30 days, etc...) <input [(ngModel)]="options.interval" placeHolder=30>

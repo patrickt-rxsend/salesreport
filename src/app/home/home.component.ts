@@ -15,6 +15,8 @@ export class Options {
 }
 export class Selections {
     addToSelection: Function;
+    removeFromSelection: Function;
+    removeAllSelection: Function;
     nameSelection: Array<Object>;
     orderSelection: Array<Object>;
     referralSelection: Array<Object>;
@@ -82,7 +84,7 @@ export class HomeComponent implements OnInit {
             // debugger;
             // DEFINITELY NEED TO FIX THIS
             var i;
-            debugger;
+            // debugger;
             for (i in this[selection]) {
                 if (this[selection][i]["id"] === val.toString()) {
                     return;
@@ -90,10 +92,14 @@ export class HomeComponent implements OnInit {
             }
             this[selection].push({ id: val.toString(), option: val.toString() });
         },
+        removeFromSelection: function(){},
+        removeAllSelection: function(selection){
+            this[selection].length = 0;
+        },
         nameSelection: [
-            { id: 'Kevin', name: 'Kevin' },
-            { id: 'Rose', name: 'Rose' },
-            { id: 'RaShaud', name: 'RaShaud' },
+            { id: 'Kevin', option: 'Kevin' },
+            { id: 'Rose', option: 'Rose' },
+            { id: 'RaShaud', option: 'RaShaud' },
         ],
         orderSelection: [
             { id: 'Doctor', option: 'Doctor' },
@@ -364,7 +370,7 @@ export class HomeComponent implements OnInit {
             }
 
             console.log(referralList);
-            for (i in referralList){
+            for (i in referralList) {
                 selections.addToSelection("referralSelection", i.toString());
             }
 
@@ -391,14 +397,15 @@ export class HomeComponent implements OnInit {
             var trendArr = [[]];// = [["Doctor", "City", "Zipcode", "Trend", "Total Referrals"]];
             var i;
             //Adds to the first column
+            for (i in newRangeStr) {
+                // trendArr[0].push(newRangeStr[i]);
+                sortOptions.addValue(newRangeStr[i], selections);
+            }
             for (i in selections.orderSelection) {
                 // debugger;
                 trendArr[0].push(selections.orderSelection[i]['option'].toString());
             }
-            for (i in newRangeStr) {
-                trendArr[0].push(newRangeStr[i]);
-                sortOptions.addValue(newRangeStr[i], selections);
-            }
+
             for (i in doctors) {
                 var doctor = doctors[i];
                 // debugger;
@@ -424,11 +431,12 @@ export class HomeComponent implements OnInit {
                 .selectAll("tr")
                 .data(trendArr).enter()
                 .append("tr")
-
                 .selectAll("td")
-                .data(function (d) { return d; }).enter()
+                .data(function (d) { debugger;
+                    return d; }).enter()
                 .append("td")
-                .text(function (d) { return d; });
+                .text(function (d) { debugger;
+                    return d; });
         });
     }
 
