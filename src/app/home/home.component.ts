@@ -82,8 +82,9 @@ export class HomeComponent implements OnInit {
             // debugger;
             // DEFINITELY NEED TO FIX THIS
             var i;
+            debugger;
             for (i in this[selection]) {
-                if (this[selection][i]["id"] === val.toString) {
+                if (this[selection][i]["id"] === val.toString()) {
                     return;
                 }
             }
@@ -188,6 +189,7 @@ export class HomeComponent implements OnInit {
             "interval": this.options.interval,
             "endDate": this.options.endDate
         }
+        var referralList = {};
 
         // var twoSort = function (a, b) {
         //     debugger;
@@ -349,8 +351,7 @@ export class HomeComponent implements OnInit {
                                 doctors[drName][newRangeStr[i]] = 0;
                             }
                             doctors[drName]["trend"] = 0;
-                            //adding referral object to add to selection later
-                            doctors[drName]["referrals"] = {"refType" : true};
+                            referralList[refType] = true;
                         }
                         //Adds counts to correct date range
                         var intDiff = dateFunc.diffDays(new Date(refDate), startDate);
@@ -362,7 +363,10 @@ export class HomeComponent implements OnInit {
                 }
             }
 
-            console.log(doctors);
+            console.log(referralList);
+            for (i in referralList){
+                selections.addToSelection("referralSelection", i.toString());
+            }
 
             //Finds trend value for each doctor-
             ///// <reference path="//" />
@@ -402,7 +406,7 @@ export class HomeComponent implements OnInit {
                  * Filters out results based on trend value
                  */
                 if (filter(doctor)) {
-                    debugger;
+                    // debugger;
                     trendArr.push([i, doctor["city"], doctor["zipcode"], doctor["trend"], doctor["Total Referrals"]]);
                     for (i in newRangeStr) {
                         trendArr[trendArr.length - 1].push(doctor[newRangeStr[i]]);
