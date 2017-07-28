@@ -292,6 +292,7 @@ export class HomeComponent implements OnInit {
         var dateFunc = this.dateFunc;
         var kevin = this.kevin;
         var options = this.options;
+        var selections = this.selections;
         d3.text(settings.fileName, function (data) {
             // debugger;
             var startDate = dateFunc.subDate(settings.endDate, settings.totalRange);
@@ -355,7 +356,12 @@ export class HomeComponent implements OnInit {
                 doctor["trend"] = lr["slope"];
 
             }
-            var trendArr = [["Doctor", "City", "Zipcode", "Trend", "Total Referrals"]];
+            var trendArr = [[]];// = [["Doctor", "City", "Zipcode", "Trend", "Total Referrals"]];
+            var i;
+            for(i in selections.orderSelection){
+                debugger;
+                trendArr[0].push(selections.orderSelection[i]['option'].toString());
+            }
             for (i in newRangeStr) {
                 trendArr[trendArr.length - 1].push(newRangeStr[i]);
             }
