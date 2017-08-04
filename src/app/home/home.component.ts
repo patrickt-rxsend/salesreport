@@ -238,6 +238,7 @@ export class HomeComponent implements OnInit {
     }
 
     getResults() {
+        this.reportResults.results = [[]];
         this.resultsPane['hiddenPane'] = false;
         this.resultsPane['showPane'] = true;
         //Resets values to default
