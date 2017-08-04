@@ -8,6 +8,7 @@
 -->
 <!DOCTYPE html>
 <html>
+
 <head>
     <base href="/">
     <title>Dolphin Portal Project</title>
@@ -17,26 +18,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
     <link href="styles/styles.css" rel="stylesheet" />
-    
+
     <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
 
     <script src="node_modules/zone.js/dist/zone.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
 
-	<!-- remove for bundle usage -->
-	<script src="systemjs.config.js"></script>
-	<script>
-		System.import('app').catch(function(err){ console.error(err); });
-	</script>
-	<!-- remove for bundle usage -->
-    
+    <!-- remove for bundle usage -->
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('app').catch(function (err) { console.error(err); });
+    </script>
+    <!-- remove for bundle usage -->
+
 </head>
+
 <body>
     <header class="navbar navbar-inner navbar-fixed-top">
         <nav class="container">
             <div class="navbar-header">
-              <span class="app-title">Dolphin Sales Project</span>
+
+                <span class="app-title">
+                                           <img src="http://www.dolphinhealth.com/images/logo-new.png" class="logo" width="346"> 
+                  <br />Dolphin Sales Project</span>
             </div>
         </nav>
     </header>
@@ -53,12 +58,13 @@
             <div class="navbar-inner footer">
                 <div class="container">
                     <footer>
-                        
+
                     </footer>
                 </div>
             </div>
         </div>
     </footer>
-        
+
 </body>
+
 </html>

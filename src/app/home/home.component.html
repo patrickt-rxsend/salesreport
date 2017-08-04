@@ -15,6 +15,7 @@
         <option value="RaShaud">RaShaud</option>
         <option value="Rose">Rose</option>
         </select>-->
+    <br /><h3>Report Options</h3>
     Your name: <select [(ngModel)]="options.name">
             <option *ngFor="let n of selections.nameSelection" [ngValue]="n.id">{{n.option}}</option>
         </select>
@@ -39,6 +40,7 @@
     <button (click)="clicked($event)">View Results</button>
     <div [ngClass]="resultsPane">
         <br /><h1>{{options.name}}'s report</h1>
+        <br /> <h3>Sort Options</h3>
             <br />Sort By: <select [(ngModel)]="sortOptions.sortOne">
             <option *ngFor="let n of selections.orderSelection" [ngValue]="n.id">{{n.option}}</option>
             </select>
