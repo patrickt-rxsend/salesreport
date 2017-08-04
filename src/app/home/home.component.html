@@ -37,9 +37,10 @@
     <br />Zip Codes for {{userFunc.zipToString(options.name)}}
     </div>-->
     <br>
-    <button (click)="clicked($event)">View Results</button>
+    <button (click)="getResults()">View Results</button>
     <div [ngClass]="resultsPane">
         <br /><h1>{{options.name}}'s report</h1>
+        <button (click)="export()">Export Results</button>
         <br /> <h3>Sort Options</h3>
             <br />Sort By: <select [(ngModel)]="sortOptions.sortOne">
             <option *ngFor="let n of selections.orderSelection" [ngValue]="n.id">{{n.option}}</option>
@@ -58,7 +59,7 @@
           <br />Show Referrals: <select [(ngModel)]="filterOptions.referral">
             <option *ngFor="let n of selections.referralSelection" [ngValue]="n.id">{{n.option}}</option>  
             </select>
-        <br /><button (click)="clicked($event)">Sort/Filter</button>
+        <br /><button (click)="getResults()">Sort/Filter</button>
         <br /><p [ngClass]="resultsGrid"></p>
     </div>
 </div>

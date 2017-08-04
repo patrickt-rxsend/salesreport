@@ -1,5 +1,6 @@
 /* Color Scheme: http://paletton.com/#uid=13F0u0kllljaHvYg1qCqFfZv+aE */
 /*http://paletton.com/#uid=13F0u0kl7nha0JffNu5r2f+wq8j  */
+/* Currently being used http://paletton.com/#uid=13D0u0k7UUa3cZA5wXlaiQ5cFL3 */
 
 html {
     overflow-y: scroll;
@@ -32,7 +33,7 @@ select {
 
 main {
     position: relative;
-    padding-top: 175px;
+    padding-top: 125px;
     background-color: #B7CEEC;
     border-radius: 15px;
 }
@@ -98,7 +99,7 @@ footer {
 
 .h3, h3 {
     font-size: 20px;
-    margin-top: -10px;
+    /* margin-top: -10px; */
     margin-bottom: 5px;
 }
 

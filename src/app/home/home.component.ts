@@ -54,6 +54,10 @@ export class UserFunc {
     zipToString: Function;
 }
 
+export class ReportResults {
+    results: Array<Array<string>>;
+}
+
 @Component({
     moduleId: module.id,
     selector: 'home',
@@ -207,7 +211,33 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    clicked(event) {
+    reportResults: ReportResults = {
+        results: [[]]
+    }
+
+    export() {
+        var csvContent = "data:text/csv;charset=utf-8,";
+        var data = this.reportResults.results;
+        var dataString;
+        data.forEach(function (infoArray, index) {
+
+            dataString = infoArray.join(",");
+            csvContent += index < data.length ? dataString + "\n" : dataString;
+
+        });
+        var opt = this.options;
+        var fileName = opt.name.toString() + "_" + this.dateFunc.dateToString(opt.endDate) + "_Past" + opt.totalRange + "_Interval" + opt.interval + ".csv";
+        
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link); // Required for FF
+
+        link.click(); 
+    }
+
+    getResults() {
         this.resultsPane['hiddenPane'] = false;
         this.resultsPane['showPane'] = true;
         //Resets values to default
@@ -224,7 +254,7 @@ export class HomeComponent implements OnInit {
             "endDate": this.options.endDate
         }
         var referralList = {};
-        debugger;
+        // debugger;
 
 
         // var twoSort = function (a, b) {
@@ -358,6 +388,7 @@ export class HomeComponent implements OnInit {
         var options = this.options;
         var selections = this.selections;
         var referral = this.filterOptions.referral;
+        var trendArr = this.reportResults.results;
         d3.text(settings.fileName, function (data) {
             // debugger;
             var startDate = dateFunc.subDate(settings.endDate, settings.totalRange);
@@ -424,13 +455,14 @@ export class HomeComponent implements OnInit {
                 lr = linearRegression(y, x);
                 doctor["trend"] = lr["slope"];
             }
-            var trendArr = [[]];// = [["Doctor", "City", "Zipcode", "Trend", "Total Referrals"]];
+            // var trendArr = [[]];// = [["Doctor", "City", "Zipcode", "Trend", "Total Referrals"]];
             var i;
             //Adds to the first column
             for (i in newRangeStr) {
                 // trendArr[0].push(newRangeStr[i]);
                 sortOptions.addValue(newRangeStr[i], selections);
             }
+            //Adds additional stuff to order selection for user
             for (i in selections.orderSelection) {
                 // debugger;
                 trendArr[0].push(selections.orderSelection[i]['option'].toString());
@@ -463,16 +495,18 @@ export class HomeComponent implements OnInit {
                 .append("tr")
                 .selectAll("td")
                 .data(function (d) {
-                    debugger;
+                    // debugger;
                     return d;
                 }).enter()
                 .append("td")
                 .text(function (d) {
-                    debugger;
+                    // debugger;
                     return d;
                 });
         });
     }
+
+
 
     constructor(private dataService: DataService) {
 
