@@ -5,6 +5,7 @@ import { DataService } from '../shared/data.service';
 export class Options {
     startDate: Date;
     endDate: Date;
+    endDateString: String;
     name: String;
     totalRange: number;
     interval: number;
@@ -19,6 +20,7 @@ export class Selections {
     removeAllSelection: Function;
     nameSelection: Array<Object>;
     orderSelection: Array<Object>;
+    setDefaultOrderSelection: Function;
     referralSelection: Array<Object>;
 }
 
@@ -28,6 +30,7 @@ export class SortOptions {
     sortTwo: String;
     sortTwoOrder: String;
     value: Object;
+    setDefaultValue: Function;
     addValue: Function;
 }
 export class FilterOptions {
@@ -70,6 +73,7 @@ export class HomeComponent implements OnInit {
     options: Options = {
         startDate: new Date(),
         endDate: new Date(),
+        endDateString: null,
         name: '',
         totalRange: 120,
         interval: 30,
@@ -92,8 +96,8 @@ export class HomeComponent implements OnInit {
             }
             this[selection].push({ id: val.toString(), option: val.toString() });
         },
-        removeFromSelection: function(){},
-        removeAllSelection: function(selection){
+        removeFromSelection: function () { },
+        removeAllSelection: function (selection) {
             this[selection].length = 0;
         },
         nameSelection: [
@@ -108,6 +112,15 @@ export class HomeComponent implements OnInit {
             { id: 'Trend', option: 'Trend' },
             { id: 'Total Referrals', option: 'Total Referrals' },
         ],
+        setDefaultOrderSelection: function () {
+            this.orderSelection = [
+                { id: 'Doctor', option: 'Doctor' },
+                { id: 'City', option: 'City' },
+                { id: 'Zipcode', option: 'Zipcode' },
+                { id: 'Trend', option: 'Trend' },
+                { id: 'Total Referrals', option: 'Total Referrals' },
+            ]
+        },
         referralSelection: [
             { id: 'All', option: 'All' }
         ]
@@ -123,6 +136,15 @@ export class HomeComponent implements OnInit {
             if (!this.value[newVal.toString()]) {
                 selections.addToSelection('orderSelection', newVal);
                 this.value[newVal.toString()] = selections.orderSelection.length - 1;
+            }
+        },
+        setDefaultValue: function () {
+            this.value = {
+                "Doctor": 0,
+                "City": 1,
+                "Zipcode": 2,
+                "Trend": 3,
+                "Total Referrals": 4
             }
         },
         value: {
@@ -188,6 +210,12 @@ export class HomeComponent implements OnInit {
     clicked(event) {
         this.resultsPane['hiddenPane'] = false;
         this.resultsPane['showPane'] = true;
+        //Resets values to default
+        this.selections.setDefaultOrderSelection();
+        this.sortOptions.setDefaultValue();
+        if (this.options.endDateString !== null) {
+            this.options.endDate = new Date(this.options.endDateString.toString());
+        }
         var settings = {
             "fileName": "../../data/newReport.csv",
             // "totalRange": this.dateFunc.diffDays(this.options.endDate, this.options.startDate),
@@ -196,6 +224,8 @@ export class HomeComponent implements OnInit {
             "endDate": this.options.endDate
         }
         var referralList = {};
+        debugger;
+
 
         // var twoSort = function (a, b) {
         //     debugger;
@@ -432,11 +462,15 @@ export class HomeComponent implements OnInit {
                 .data(trendArr).enter()
                 .append("tr")
                 .selectAll("td")
-                .data(function (d) { debugger;
-                    return d; }).enter()
+                .data(function (d) {
+                    debugger;
+                    return d;
+                }).enter()
                 .append("td")
-                .text(function (d) { debugger;
-                    return d; });
+                .text(function (d) {
+                    debugger;
+                    return d;
+                });
         });
     }
 
