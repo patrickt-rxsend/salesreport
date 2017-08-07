@@ -2,15 +2,25 @@
 /*http://paletton.com/#uid=13F0u0kl7nha0JffNu5r2f+wq8j  */
 /* Currently being used http://paletton.com/#uid=13D0u0k7UUa3cZA5wXlaiQ5cFL3 */
 
+
+
 html {
     overflow-y: scroll;
     overflow-x: scroll;
     /* background-color: aliceblue; */
+      -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 body {
         background-color: #9FBCE1;
         border-radius: 15px;
+        
 }
 
  input {
