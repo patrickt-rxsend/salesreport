@@ -217,7 +217,12 @@ export class HomeComponent implements OnInit {
 
     export() {
         var csvContent = "data:text/csv;charset=utf-8,";
-        var data = this.reportResults.results;
+        var data = this.reportResults.results.slice(0);//Clones the array
+        //Turns the last name into an abbreviation
+        for(var i = 1; i < data.length; i++){
+            var lastNameIndex = data[i][0].lastIndexOf(" ");
+            data[i][0] = data[i][0].slice(0, lastNameIndex+2) + ".";
+        }
         var dataString;
         data.forEach(function (infoArray, index) {
 
