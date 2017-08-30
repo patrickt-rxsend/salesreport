@@ -121,3 +121,7 @@ table, th, td {
     background-color: #CEDFF5; 
 }
 
+
+.h5, h5 {
+    color: red;
+}
