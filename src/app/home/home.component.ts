@@ -100,7 +100,8 @@ export class HomeComponent implements OnInit {
         pinNumbers: {
             'Kevin': '1214',
             'Rose': '9214',
-            'RaShaud': '0000'
+            'RaShaud': '0000',
+            'Phil': '7400'
         }
     }
 
@@ -124,7 +125,8 @@ export class HomeComponent implements OnInit {
         nameSelection: [
             { id: 'Kevin', option: 'Kevin' },
             { id: 'Rose', option: 'Rose' },
-            { id: 'RaShaud', option: 'RaShaud' }
+            { id: 'RaShaud', option: 'RaShaud' },
+            { id: 'Phil', option: 'Phil'}
         ],
         orderSelection: [
             { id: 'Doctor', option: 'Doctor' },
@@ -348,7 +350,7 @@ export class HomeComponent implements OnInit {
             var filter = function (doctor) {
                 if ((doctor["trend"] <= options.trendThreshold && options.trendCutoff === "Above") || (doctor["trend"] >= options.trendThreshold && options.trendCutoff === "Below")) {
                     if ((doctor["Total Referrals"] <= options.totRefThreshold && options.totRefCutoff === "Above") || (doctor["Total Referrals"] >= options.totRefThreshold && options.totRefCutoff === "Below")) {
-                        if (userZip[doctor["zipcode"]])
+                        if (options.name === "Phil" || userZip[doctor["zipcode"]])
                             return true;
                     }
                 }
