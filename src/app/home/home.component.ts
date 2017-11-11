@@ -4,6 +4,7 @@ import { DataService } from '../shared/data.service';
 
 export class Options {
     startDate: Date;
+    startDateString: String;
     endDate: Date;
     endDateString: String;
     name: String;
@@ -17,7 +18,7 @@ export class Options {
     errorMessage: String;
 }
 
-export class Users{
+export class Users {
     person: Object;
     returnPins: Function;
     returnAsObj: Function;
@@ -83,8 +84,40 @@ export class HomeComponent implements OnInit {
     }
     resultsGrid = 'resultsGrid';
 
+    dateFunc: DateFunc = {
+        dateRangeString: function (dateRanges) {
+            var strArr = [];
+            //    debugger;
+            var i;
+            for (i = 0; i < dateRanges.length - 1; i++) {
+                strArr.push(this.dateToString(dateRanges[i]) + " to " + this.dateToString(dateRanges[i + 1]));
+            }
+            //    debugger;
+            return strArr;
+        },
+        //Param1: Date Variable
+        //Param2: Date Variable
+        diffDays: function (day1, day2) {
+            var oneDay = 24 * 60 * 60 * 1000;
+            return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
+        },
+        subDate: function (date, days) {
+            // debugger;
+            var tempDate = new Date(date);
+            return new Date(tempDate.setDate(tempDate.getDate() - days));
+        },
+        addDate: function (date, days) {
+            var tempDate = new Date(date);
+            return new Date(tempDate.setDate(tempDate.getDate() + days));
+        },
+        dateToString: function (x) {
+            return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
+        }
+    }
+
     options: Options = {
-        startDate: new Date(),
+        startDate: this.dateFunc.subDate(new Date(), 30),
+        startDateString: null,
         endDate: new Date(),
         endDateString: null,
         name: '',
@@ -103,39 +136,40 @@ export class HomeComponent implements OnInit {
             'Kevin': {
                 name: 'Kevin',
                 pin: '1214',
-                zipcodes: {94595: "True", 94596: "True", 94598: "True", 93277: "True", 93291: "True", 93292: "True", 94587: "True", 95380: "True", 95382: "True", 95202: "True", 95203: "True", 95204: "True", 95205: "True", 95206: "True", 95207: "True", 95209: "True", 95210: "True", 95212: "True", 95215: "True", 95219: "True", 94583: "True", 94806: "True", 94401: "True", 94402: "True", 94403: "True", 94404: "True", 94497: "True", 94577: "True", 94578: "True", 94579: "True", 95110: "True", 95111: "True", 95112: "True", 95113: "True", 95116: "True", 95117: "True", 95118: "True", 95119: "True", 95120: "True", 95121: "True", 95122: "True", 95123: "True", 95124: "True", 95125: "True", 95126: "True", 95127: "True", 95128: "True", 95129: "True", 95130: "True", 95131: "True", 95132: "True", 95133: "True", 95134: "True", 95135: "True", 95136: "True", 95138: "True", 95139: "True", 95148: "True", 94102: "True", 94103: "True", 94104: "True", 94105: "True", 94107: "True", 94108: "True", 94109: "True", 94110: "True", 94111: "True", 94112: "True", 94114: "True", 94115: "True", 94116: "True", 94117: "True", 94118: "True", 94121: "True", 94122: "True", 94123: "True", 94124: "True", 94127: "True", 94128: "True", 94129: "True", 94130: "True", 94131: "True", 94132: "True", 94133: "True", 94134: "True", 94070: "True", 93901: "True", 93905: "True", 93906: "True", 93908: "True", 95814: "True", 95815: "True", 95816: "True", 95817: "True", 95818: "True", 95819: "True", 95820: "True", 95821: "True", 95822: "True", 95823: "True", 95824: "True", 95825: "True", 95826: "True", 95827: "True", 95828: "True", 95829: "True", 95830: "True", 95831: "True", 95832: "True", 95833: "True", 95834: "True", 95835: "True", 95836: "True", 95837: "True", 95838: "True", 95841: "True", 95842: "True", 95864: "True", 95661: "True", 95678: "True", 95747: "True", 95677: "True", 95765: "True", 94061: "True", 94063: "True", 94065: "True", 95630: "True", 95671: "True", 95763: "True", 94702: "True", 94703: "True", 94704: "True", 94705: "True", 94709: "True", 94710: "True", 95003: "True", 96001: "True", 96002: "True", 96003: "True", 96080: "True", 94566: "True", 94588: "True", 94301: "True", 94304: "True", 94306: "True", 95966: "True", 94601: "True", 94602: "True", 94603: "True", 94605: "True", 94606: "True", 94607: "True", 94609: "True", 94610: "True", 94612: "True", 94619: "True", 94621: "True", 94945: "True", 94947: "True", 94949: "True", 94040: "True", 94041: "True", 94043: "True", 95350: "True", 95351: "True", 95354: "True", 95355: "True", 95356: "True", 95357: "True", 95358: "True", 95348: "True", 95032: "True", 95033: "True", 94550: "True", 94541: "True", 94542: "True", 94544: "True", 94545: "True", 93230: "True", 95945: "True", 95949: "True", 95020: "True", 93701: "True", 93702: "True", 93703: "True", 93705: "True", 93710: "True", 93711: "True", 93720: "True", 93721: "True", 93722: "True", 93726: "True", 93727: "True", 93728: "True", 94536: "True", 94538: "True", 94539: "True", 94555: "True", 94518: "True", 94519: "True", 94520: "True", 94521: "True", 93301: "True", 93304: "True", 93306: "True", 93307: "True", 93308: "True", 93309: "True", 93311: "True", 93313: "True", 94509: "True", 95991: "True", 95992: "True", 95993: "True"}
+                zipcodes: { 94595: "True", 94596: "True", 94598: "True", 93277: "True", 93291: "True", 93292: "True", 94587: "True", 95380: "True", 95382: "True", 95202: "True", 95203: "True", 95204: "True", 95205: "True", 95206: "True", 95207: "True", 95209: "True", 95210: "True", 95212: "True", 95215: "True", 95219: "True", 94583: "True", 94806: "True", 94401: "True", 94402: "True", 94403: "True", 94404: "True", 94497: "True", 94577: "True", 94578: "True", 94579: "True", 95110: "True", 95111: "True", 95112: "True", 95113: "True", 95116: "True", 95117: "True", 95118: "True", 95119: "True", 95120: "True", 95121: "True", 95122: "True", 95123: "True", 95124: "True", 95125: "True", 95126: "True", 95127: "True", 95128: "True", 95129: "True", 95130: "True", 95131: "True", 95132: "True", 95133: "True", 95134: "True", 95135: "True", 95136: "True", 95138: "True", 95139: "True", 95148: "True", 94102: "True", 94103: "True", 94104: "True", 94105: "True", 94107: "True", 94108: "True", 94109: "True", 94110: "True", 94111: "True", 94112: "True", 94114: "True", 94115: "True", 94116: "True", 94117: "True", 94118: "True", 94121: "True", 94122: "True", 94123: "True", 94124: "True", 94127: "True", 94128: "True", 94129: "True", 94130: "True", 94131: "True", 94132: "True", 94133: "True", 94134: "True", 94070: "True", 93901: "True", 93905: "True", 93906: "True", 93908: "True", 95814: "True", 95815: "True", 95816: "True", 95817: "True", 95818: "True", 95819: "True", 95820: "True", 95821: "True", 95822: "True", 95823: "True", 95824: "True", 95825: "True", 95826: "True", 95827: "True", 95828: "True", 95829: "True", 95830: "True", 95831: "True", 95832: "True", 95833: "True", 95834: "True", 95835: "True", 95836: "True", 95837: "True", 95838: "True", 95841: "True", 95842: "True", 95864: "True", 95661: "True", 95678: "True", 95747: "True", 95677: "True", 95765: "True", 94061: "True", 94063: "True", 94065: "True", 95630: "True", 95671: "True", 95763: "True", 94702: "True", 94703: "True", 94704: "True", 94705: "True", 94709: "True", 94710: "True", 95003: "True", 96001: "True", 96002: "True", 96003: "True", 96080: "True", 94566: "True", 94588: "True", 94301: "True", 94304: "True", 94306: "True", 95966: "True", 94601: "True", 94602: "True", 94603: "True", 94605: "True", 94606: "True", 94607: "True", 94609: "True", 94610: "True", 94612: "True", 94619: "True", 94621: "True", 94945: "True", 94947: "True", 94949: "True", 94040: "True", 94041: "True", 94043: "True", 95350: "True", 95351: "True", 95354: "True", 95355: "True", 95356: "True", 95357: "True", 95358: "True", 95348: "True", 95032: "True", 95033: "True", 94550: "True", 94541: "True", 94542: "True", 94544: "True", 94545: "True", 93230: "True", 95945: "True", 95949: "True", 95020: "True", 93701: "True", 93702: "True", 93703: "True", 93705: "True", 93710: "True", 93711: "True", 93720: "True", 93721: "True", 93722: "True", 93726: "True", 93727: "True", 93728: "True", 94536: "True", 94538: "True", 94539: "True", 94555: "True", 94518: "True", 94519: "True", 94520: "True", 94521: "True", 93301: "True", 93304: "True", 93306: "True", 93307: "True", 93308: "True", 93309: "True", 93311: "True", 93313: "True", 94509: "True", 95991: "True", 95992: "True", 95993: "True" }
             },
-            'Rudy' : {
+            'Rudy': {
                 name: 'Rudy',
                 pin: '3174',
-                zipcodes: {92804:"Anaheim",92307:"Apple Valley",92821:"Brea",91710:"Chino Hills",91723:"Covina",91765:"Diamond Bar",91740:"Glendora",91746:"Hacienda Heights",92543:"Hemet",90017:"L.A.",90712:"Lakewood",90608:"Long Beach",90720:"Los Alamitos",90262:"Lynwood",90640:"Montbello",92562:"Murrieta",92262:"Palm Sprigs",90660:"Pico Rivera",91767:"Pomona",91730:"Rancho Cucamonga",92374:"Redlands",92506:"Riverside",92592:"Temecula",91786:"Upland",92395:"Victorville",91790:"West Covina",90602:"Whittier",92835:"Fullerton",92618:"Irvine",92663:"Newport Beach",90255:"Huntington Park",90723:"Paramount",90241:"Downey",92553:"Moreno Valley"}
+                zipcodes: { 92804: "Anaheim", 92307: "Apple Valley", 92821: "Brea", 91710: "Chino Hills", 91723: "Covina", 91765: "Diamond Bar", 91740: "Glendora", 91746: "Hacienda Heights", 92543: "Hemet", 90017: "L.A.", 90712: "Lakewood", 90608: "Long Beach", 90720: "Los Alamitos", 90262: "Lynwood", 90640: "Montbello", 92562: "Murrieta", 92262: "Palm Sprigs", 90660: "Pico Rivera", 91767: "Pomona", 91730: "Rancho Cucamonga", 92374: "Redlands", 92506: "Riverside", 92592: "Temecula", 91786: "Upland", 92395: "Victorville", 91790: "West Covina", 90602: "Whittier", 92835: "Fullerton", 92618: "Irvine", 92663: "Newport Beach", 90255: "Huntington Park", 90723: "Paramount", 90241: "Downey", 92553: "Moreno Valley" }
             },
-            'Phil' : {
+            'Phil': {
                 name: 'Phil',
                 pin: '7400',
                 zipcodes: {}
             }
         },
-        returnPins: function (){
+        returnPins: function () {
             return this.returnAsObj('pin');
         },
-        returnAsObj: function(option){
+        returnAsObj: function (option) {
             var obj = {};
             var i;
-            for(i in this.person){
+            for (i in this.person) {
                 obj[i] = this.person[i][option]
             }
             return obj;
         },
-        returnNameSelection: function(){
+        returnNameSelection: function () {
             var nameSelection = [];
             var i;
-            for(i in this.person){
-                nameSelection.push({id: i.toString(), option: i.toString()})
+            for (i in this.person) {
+                nameSelection.push({ id: i.toString(), option: i.toString() })
             }
             return nameSelection;
         }
     }
+
 
     verification: Verification = {
         pinNumbers: this.users.returnAsObj('pin')
@@ -227,36 +261,7 @@ export class HomeComponent implements OnInit {
             return a;
         }
     }
-    dateFunc: DateFunc = {
-        dateRangeString: function (dateRanges) {
-            var strArr = [];
-            //    debugger;
-            var i;
-            for (i = 0; i < dateRanges.length - 1; i++) {
-                strArr.push(this.dateToString(dateRanges[i]) + " to " + this.dateToString(dateRanges[i + 1]));
-            }
-            //    debugger;
-            return strArr;
-        },
-        //Param1: Date Variable
-        //Param2: Date Variable
-        diffDays: function (day1, day2) {
-            var oneDay = 24 * 60 * 60 * 1000;
-            return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
-        },
-        subDate: function (date, days) {
-            // debugger;
-            var tempDate = new Date(date);
-            return new Date(tempDate.setDate(tempDate.getDate() - days));
-        },
-        addDate: function (date, days) {
-            var tempDate = new Date(date);
-            return new Date(tempDate.setDate(tempDate.getDate() + days));
-        },
-        dateToString: function (x) {
-            return x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + (x.getDate());
-        }
-    }
+
 
     reportResults: ReportResults = {
         results: [[]]
@@ -323,7 +328,8 @@ export class HomeComponent implements OnInit {
                 // "totalRange": this.dateFunc.diffDays(this.options.endDate, this.options.startDate),
                 "totalRange": this.options.totalRange,
                 "interval": this.options.interval,
-                "endDate": this.options.endDate
+                "endDate": this.options.endDate,
+                "startDate": this.options.startDate
             }
             var referralList = {};
             // debugger;
@@ -455,6 +461,9 @@ export class HomeComponent implements OnInit {
             var trendArr = this.reportResults.results;
             d3.text(settings.fileName, function (data) {
                 // debugger;
+
+                //To switch later if needed
+                // var startDate = settings.startDate;
                 var startDate = dateFunc.subDate(settings.endDate, settings.totalRange);
                 var doctors = {};
                 var i;
