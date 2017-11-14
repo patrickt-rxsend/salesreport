@@ -6,3 +6,10 @@
     display: block;
 }
 
+.hideAdv {
+    display: none;
+}
+
+.showAdv {
+    display: block;
+}

@@ -25,8 +25,9 @@
      <br />Date: <input type="date" [(ngModel)]="options.endDateString"> 
     <!-- <br />Start Date: <input type="date" [(ngModel)]="options.startDateString"> -->
     <!-- <br />End Date: <input  type="date" [(ngModel)]="options.endDateString"> -->
-    <b>
-    <br />Advanced Options</b>
+    <br /><button (click)="showAdvanced()">Show Advanced Options</button>
+    <div [ngClass]="advancedOptions">
+    <br /><b>Advanced Options</b>
     <br />Input the number of days you want to go back) <input [(ngModel)]="options.totalRange" placeHolder = 120>
     <br />Input an interval (such as 7 days, 30 days, etc...) <input [(ngModel)]="options.interval" placeHolder=30>
     <br />Input a threshold for trend (values above/below won't show) <input [(ngModel)]="options.trendThreshold">
@@ -39,6 +40,7 @@
             <option value="Above">Above</option>
             <option value="Below">Below</option>
             </select>
+    </div>
 
     <!--<div>
     <br />Zip Codes for {{userFunc.zipToString(options.name)}}
