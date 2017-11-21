@@ -279,7 +279,7 @@ export class HomeComponent implements OnInit {
 
     verifyUser() {
         var name = this.options.name.toString();
-        debugger;
+        // debugger;
         if (this.verification.pinNumbers[name] === this.options.pin) {
             this.options.errorMessage = '';
             this.resultsPane['showPane'] = true;
@@ -337,14 +337,33 @@ export class HomeComponent implements OnInit {
             if (this.options.endDateString !== null) {
                 this.options.endDate = new Date(this.options.endDateString.toString());
             }
+            var totalRange = this.options.totalRange;
+            var tempInterval = function(){
+                if((totalRange / 3) % 1 === 0){
+                    return totalRange/3;
+                } else if((totalRange / 5) % 1 === 0){
+                    return totalRange/5;
+                } else  if((totalRange / 4) % 1 === 0){
+                    return totalRange/4;
+                } else  if((totalRange / 6) % 1 === 0){
+                    return totalRange/6;
+                } else  if((totalRange / 7) % 1 === 0){
+                    return totalRange/7;
+                } else  if((totalRange / 2) % 1 === 0){
+                    return totalRange/2;
+                } else {
+                    return 1;
+                } 
+            }();
             var settings = {
                 "fileName": "../../data/newReport.csv",
                 // "totalRange": this.dateFunc.diffDays(this.options.endDate, this.options.startDate),
                 "totalRange": this.options.totalRange,
-                "interval": this.options.interval,
+                "interval": tempInterval,
                 "endDate": this.options.endDate,
                 "startDate": this.options.startDate
             }
+            debugger;
             var referralList = {};
             // debugger;
 
