@@ -37,6 +37,7 @@ export class Selections {
     orderSelection: Array<Object>;
     setDefaultOrderSelection: Function;
     referralSelection: Array<Object>;
+    citiesSelection: Array<Object>;
 }
 
 export class SortOptions {
@@ -50,6 +51,8 @@ export class SortOptions {
 }
 export class FilterOptions {
     referral: String;
+    doctors: Object;
+    cities: Object;
 }
 
 export class DateFunc {
@@ -91,12 +94,10 @@ export class HomeComponent implements OnInit {
     dateFunc: DateFunc = {
         dateRangeString: function (dateRanges) {
             var strArr = [];
-            //    debugger;
             var i;
             for (i = 0; i < dateRanges.length - 1; i++) {
                 strArr.push(this.dateToString(dateRanges[i]) + " to " + this.dateToString(dateRanges[i + 1]));
             }
-            //    debugger;
             return strArr;
         },
         //Param1: Date Variable
@@ -106,7 +107,6 @@ export class HomeComponent implements OnInit {
             return Math.round(Math.abs((day1.getTime() - day2.getTime()) / (oneDay)));
         },
         subDate: function (date, days) {
-            // debugger;
             var tempDate = new Date(date);
             return new Date(tempDate.setDate(tempDate.getDate() - days));
         },
@@ -126,9 +126,9 @@ export class HomeComponent implements OnInit {
         endDateString: null,
         name: '',
         pin: '',
-        totalRange: 120,
-        interval: 30,
-        trendThreshold: 2,
+        totalRange: 30,
+        interval: 0,
+        trendThreshold: 100,
         trendCutoff: "Above",
         totRefThreshold: 0,
         totRefCutoff: "Below",
@@ -186,10 +186,8 @@ export class HomeComponent implements OnInit {
 
     selections: Selections = {
         addToSelection: function (selection, val) {
-            // debugger;
             // DEFINITELY NEED TO FIX THIS
             var i;
-            // debugger;
             for (i in this[selection]) {
                 if (this[selection][i]["id"] === val.toString()) {
                     return;
@@ -220,6 +218,9 @@ export class HomeComponent implements OnInit {
         },
         referralSelection: [
             { id: 'All', option: 'All' }
+        ],
+        citiesSelection: [
+            { id: 'All', option: 'All'}
         ]
     }
     sortOptions: SortOptions = {
@@ -229,7 +230,6 @@ export class HomeComponent implements OnInit {
         sortTwoOrder: "Descending",
         addValue: function (newVal, selections) {
             //This is kind of hacked in. May need to refactor in order to improve performance.
-            // debugger;
             if (!this.value[newVal.toString()]) {
                 selections.addToSelection('orderSelection', newVal);
                 this.value[newVal.toString()] = selections.orderSelection.length - 1;
@@ -253,7 +253,9 @@ export class HomeComponent implements OnInit {
         }
     }
     filterOptions: FilterOptions = {
-        referral: 'All'
+        referral: 'All',
+        doctors: [],
+        cities: []
     }
 
 
@@ -262,7 +264,6 @@ export class HomeComponent implements OnInit {
             a = a.charAt(0).toLowerCase() + a.slice(1);
 
             var str = "Test";
-            // debugger;
             for (var i in a.zipCodes) {
                 str = i.toString() + ",";
                 console.log(i);
@@ -278,8 +279,7 @@ export class HomeComponent implements OnInit {
 
 
     verifyUser() {
-        var name = this.options.name.toString();
-        // debugger;
+        var name = this.options.name.toString()
         if (this.verification.pinNumbers[name] === this.options.pin) {
             this.options.errorMessage = '';
             this.resultsPane['showPane'] = true;
@@ -337,8 +337,14 @@ export class HomeComponent implements OnInit {
             if (this.options.endDateString !== null) {
                 this.options.endDate = new Date(this.options.endDateString.toString());
             }
-            var totalRange = this.options.totalRange;
+
+            //Setting interval
+            var options = this.options;
             var tempInterval = function(){
+                var totalRange = options.totalRange;
+                if(options.interval !== 0){
+                    return options.interval;
+                }
                 if((totalRange / 3) % 1 === 0){
                     return totalRange/3;
                 } else if((totalRange / 5) % 1 === 0){
@@ -351,8 +357,12 @@ export class HomeComponent implements OnInit {
                     return totalRange/7;
                 } else  if((totalRange / 2) % 1 === 0){
                     return totalRange/2;
+                } else if((totalRange / 11) % 1 === 0){
+                    return totalRange/11;
+                } else if((totalRange / 13) % 1 === 0){
+                    return totalRange/13;
                 } else {
-                    return 1;
+                    return totalRange/3;
                 } 
             }();
             var settings = {
@@ -363,23 +373,8 @@ export class HomeComponent implements OnInit {
                 "endDate": this.options.endDate,
                 "startDate": this.options.startDate
             }
-            debugger;
             var referralList = {};
-            // debugger;
-
-
-            // var twoSort = function (a, b) {
-            //     debugger;
-            //     var colOne;
-            //     var colTwo;
-            //     if (a[3] !== "Trend") {
-            //         if (a[3] < b[3]) return -1;
-            //         else if (a[3] > b[3]) return 1;
-            //         else if (a[4] > b[4]) return -1;
-            //         else if (a[4] < b[4]) return 1;
-            //         else return 0;
-            //     }
-            // }
+            var citiesList = {};
 
             /**
              * Sorts by comparing two different elements.
@@ -387,7 +382,7 @@ export class HomeComponent implements OnInit {
              */
             var sortOptions = this.sortOptions;
             var twoSort = function (a, b) {
-                // debugger;
+
                 var sortOne = sortOptions.value[sortOptions.sortOne.toString()];
                 var sortTwo = sortOptions.value[sortOptions.sortTwo.toString()];
                 if (a[sortOne] !== sortOptions.sortOne) {
@@ -403,7 +398,7 @@ export class HomeComponent implements OnInit {
              * Sorting function
             **/
             var sortAsc = function (a, b, order) {
-                // debugger;
+
                 if (order === "Ascending") {
                     if (a < b) return -1;
                     else if (a > b) return 1;
@@ -414,11 +409,26 @@ export class HomeComponent implements OnInit {
                     else return 0;
                 }
             }
-            var filter = function (doctor) {
+
+            //Filters results based on parameters
+            var filter = function (filterOptions) {
+                var doctor = filterOptions.doctors;
+                var cities = filterOptions.cities;
                 if ((doctor["trend"] <= options.trendThreshold && options.trendCutoff === "Above") || (doctor["trend"] >= options.trendThreshold && options.trendCutoff === "Below")) {
                     if ((doctor["Total Referrals"] <= options.totRefThreshold && options.totRefCutoff === "Above") || (doctor["Total Referrals"] >= options.totRefThreshold && options.totRefCutoff === "Below")) {
                         if (options.name === "Phil" || userZip[doctor["zipcode"]])
-                            return true;
+                            debugger;
+                            if(cities.length === 0 || cities[0] === "All"){
+                                return true;
+                            } else {
+                                var i;
+                                for(i = 0; i < cities.length; i++){
+                                    if(cities[i] === doctor["city"]){
+                                        return true;
+                                    }
+                                }
+                                    return false;
+                            }
                     }
                 }
                 return false;
@@ -426,7 +436,6 @@ export class HomeComponent implements OnInit {
 
             //Refactor code later
             var userZips = this.users.returnAsObj('zipcodes');
-            debugger;
             var userZip;
             userZip = userZips[this.options.name.toString()];
 
@@ -452,7 +461,6 @@ export class HomeComponent implements OnInit {
                         break;
                     }
                 }
-                //    debugger;
                 return dateRange;
             }
 
@@ -476,7 +484,7 @@ export class HomeComponent implements OnInit {
                     sum_xx += (x[i] * x[i]);
                     sum_yy += (y[i] * y[i]);
                 }
-                // debugger;
+
                 lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
                 lr['intercept'] = (sum_y - lr['slope'] * sum_x) / n;
                 lr['r2'] = Math.pow((n * sum_xy - sum_x * sum_y) / Math.sqrt((n * sum_xx - sum_x * sum_x) * (n * sum_yy - sum_y * sum_y)), 2);
@@ -490,10 +498,11 @@ export class HomeComponent implements OnInit {
             var dateFunc = this.dateFunc;
             var options = this.options;
             var selections = this.selections;
-            var referral = this.filterOptions.referral;
+            var filterOptions = this.filterOptions;
+            var referral = filterOptions.referral;
             var trendArr = this.reportResults.results;
             d3.text(settings.fileName, function (data) {
-                // debugger;
+
 
                 //To switch later if needed
                 // var startDate = settings.startDate;
@@ -510,10 +519,10 @@ export class HomeComponent implements OnInit {
                     var refDate = new Date(drArr[3]);
                     var refType = drArr[4].toString();
                     // Referral code goes here
-                    // debugger;
+    
                     if (refDate <= settings.endDate && refDate >= startDate) {
                         //Add to the doctor's object
-                        // debugger;
+        
                         //Only adds if referral either equals to 'All', or the current refType from data is equal to referral
                         if (referral === 'All' || referral === refType) {
                             if (!doctors[drName]) {
@@ -525,6 +534,9 @@ export class HomeComponent implements OnInit {
                                 }
                                 doctors[drName]["trend"] = 0;
                                 referralList[refType] = true;
+                                if(userZip[doctors[drName]["zipcode"]]){
+                                    citiesList[doctors[drName]["city"]] = true;
+                                }
                             }
                             //Adds counts to correct date range
                             var intDiff = dateFunc.diffDays(new Date(refDate), startDate);
@@ -540,6 +552,9 @@ export class HomeComponent implements OnInit {
                 for (i in referralList) {
                     selections.addToSelection("referralSelection", i.toString());
                 }
+                for(i in citiesList){
+                    selections.addToSelection("citiesSelection", i.toString());
+                }
 
                 //Finds trend value for each doctor-
                 ///// <reference path="//" />
@@ -551,7 +566,6 @@ export class HomeComponent implements OnInit {
                     var x = [];
                     var y = [];
                     var lr;
-                    //   debugger;
                     for (i in newRangeStr) {
                         count += doctor[newRangeStr[i]];
                         y.push(count2++);
@@ -570,18 +584,19 @@ export class HomeComponent implements OnInit {
                 }
                 //Adds additional stuff to order selection for user
                 for (i in selections.orderSelection) {
-                    // debugger;
+    
                     trendArr[0].push(selections.orderSelection[i]['option'].toString());
                 }
 
                 for (i in doctors) {
                     var doctor = doctors[i];
-                    // debugger;
+    
                     /**
                      * Filters out results based on trend value
                      */
-                    if (filter(doctor)) {
-                        // debugger;
+                    filterOptions.doctors = doctor;
+                    if (filter(filterOptions)) {
+        
                         trendArr.push([i, doctor["city"], doctor["zipcode"], doctor["trend"], doctor["Total Referrals"]]);
                         for (i in newRangeStr) {
                             trendArr[trendArr.length - 1].push(doctor[newRangeStr[i]]);
@@ -591,7 +606,7 @@ export class HomeComponent implements OnInit {
                 }
                 //    console.log(doctors);
                 console.log(trendArr);
-                // debugger;
+
                 trendArr = trendArr.sort(twoSort);
                 d3.select("p").selectAll("*").remove();
                 var container = d3.select("p")
@@ -601,12 +616,12 @@ export class HomeComponent implements OnInit {
                     .append("tr")
                     .selectAll("td")
                     .data(function (d) {
-                        // debugger;
+        
                         return d;
                     }).enter()
                     .append("td")
                     .text(function (d) {
-                        // debugger;
+        
                         return d;
                     });
             });
