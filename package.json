@@ -9,7 +9,7 @@
   "scripts": {
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "start": "tsc && concurrently \"tsc -w\" \"lite-server\" "
+    "start": "tsc && concurrently \"tsc -w\" \"lite-server -c bs-config.json\" "
   },
   "license": "ISC",
   "dependencies": {

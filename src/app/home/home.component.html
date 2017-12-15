@@ -23,7 +23,7 @@
     <br />
     Pin Number: <input [(ngModel)]="options.pin">
     <br />Date: <input type="date" [(ngModel)]="options.endDateString"> 
-    <br />Range (days): <input [(ngModel)]="options.totalRange">
+    <br />Range (days to go back): <input [(ngModel)]="options.totalRange">
     <!-- <br />Start Date: <input type="date" [(ngModel)]="options.startDateString"> -->
     <!-- <br />End Date: <input  type="date" [(ngModel)]="options.endDateString"> -->
     <br /><button (click)="showAdvanced()">Show Advanced Options</button>
@@ -65,6 +65,7 @@
                 <option value="Ascending">Ascending</option>
                 <option value="Descending">Descending</option>
                 </select>
+        <br /> <h3>Filter Options</h3>                
           <br />Show Referrals: <select [(ngModel)]="filterOptions.referral">
             <option *ngFor="let n of selections.referralSelection" [ngValue]="n.id">{{n.option}}</option>  
             </select>

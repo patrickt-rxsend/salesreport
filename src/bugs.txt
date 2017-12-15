@@ -50,3 +50,6 @@ sales rep doctor
 -Figure out how to assign a doctor to each sales rep
     -Based on date the sale rep was assigned to the doctor
     -Maybe need to keep a separate database
+
+
+Need to fix how the calculations are being done. right now it's doing everything off the bat, but only need to calculate a few stuff at a time
