@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit {
             },
             'Kimberly' : {
                 name: 'Kimberly',
-                pin: '9820',
+                pin: '7400',
                 zipcodes: {91101:"Pasadena",91006:"Arcadia",91007:"Arcadia",91775:"San Gabriel",91776:"San Gabriel",91754:"Monterey Park",91755:"Monterey Park",90501:"Torrance",90502:"Torrance",90503:"Torrance",90504:"Torrance",90505:"Torrance",91201:"Glendale",91202:"Glendale",91203:"Glendale",91204:"Glendale",91205:"Glendale",91206:"Glendale",91207:"Glendale",91208:"Glendale",91801:"Alhambra",91803:"Alhambra",91360:"Thousand Oaks",91301:"Agoura Hills",91376:"Agoura Hills",91377:"Agoura Hills",91302:"Calabasas",93010:"Camarillo",93012:"Camarillo",93030:"Oxnard",93033:"Oxnard",93035:"Oxnard",93001:"Ventura",93002:"Ventura",93003:"Ventura",93004:"Ventura",93005:"Ventura",93006:"Ventura",93007:"Ventura",93009:"Ventura",93101:"Santa Barbara",93103:"Santa Barbara",93105:"Santa Barbara",93109:"Santa Barbara",93110:"Santa Barbara",93111:"Santa Barbara",93448:"Pismo Beach",93449:"Pismo Beach",93454:"Santa Maria",93455:"Santa Maria",93456:"Santa Maria",93457:"Santa Maria",93458:"Santa Maria",93401:"San Luis Obispo",93402:"San Luis Obispo",93403:"San Luis Obispo",93405:"San Luis Obispo",93406:"San Luis Obispo",93407:"San Luis Obispo",93408:"San Luis Obispo",93409:"San Luis Obispo",93410:"San Luis Obispo",93412:"San Luis Obispo",93436:"Lompoc",93437:"Lompoc",93465:"Templeton"}
             }
         },
